@@ -34,6 +34,7 @@ class store implements \tool_log\log\writer, \core\log\sql_reader {
 
     public function __construct(\tool_log\log\manager $manager) {
         $this->helper_setup($manager);
+        $this->jsonformat = (bool)$this->get_config('jsonformat', false);
     }
 
     /**
@@ -74,21 +75,7 @@ class store implements \tool_log\log\writer, \core\log\sql_reader {
     }
 
     public function get_events_select($selectwhere, array $params, $sort, $limitfrom, $limitnum) {
-        global $DB;
-
-        $sort = self::tweak_sort_by_id($sort);
-
-        $events = array();
-        $records = $DB->get_recordset_select('logstore_lastupdated_log', $selectwhere, $params, $sort, '*', $limitfrom, $limitnum);
-
-        foreach ($records as $data) {
-            if ($event = $this->get_log_event($data)) {
-                $events[$data->id] = $event;
-            }
-        }
-
-        $records->close();
-        return $events;
+        return array();
     }
 
     /**
@@ -106,15 +93,8 @@ class store implements \tool_log\log\writer, \core\log\sql_reader {
      * @return \core\dml\recordset_walk|\core\event\base[]
      */
     public function get_events_select_iterator($selectwhere, array $params, $sort, $limitfrom, $limitnum) {
-        global $DB;
 
-        $sort = self::tweak_sort_by_id($sort);
-
-        $recordset = $DB->get_recordset_select(
-                'logstore_lastupdated_log', $selectwhere, $params, $sort, '*', $limitfrom, $limitnum
-        );
-
-        return new \core\dml\recordset_walk($recordset, array($this, 'get_log_event'));
+        return new \core\dml\recordset_walk(new empty_recordset(), array($this, 'get_log_event'));
     }
 
     /**
@@ -145,8 +125,7 @@ class store implements \tool_log\log\writer, \core\log\sql_reader {
     }
 
     public function get_events_select_count($selectwhere, array $params) {
-        global $DB;
-        return $DB->count_records_select('logstore_lastupdated_log', $selectwhere, $params);
+        return 0;
     }
 
     /**
@@ -157,6 +136,18 @@ class store implements \tool_log\log\writer, \core\log\sql_reader {
     public function is_logging() {
         // Only enabled stpres are queried,
         // this means we can return true here unless store has some extra switch.
-        return true;
+        return false;
+    }
+
+    /**
+     * Get whether events are present for the given select clause.
+     * Since this plugin is not for internal moodle purpose we can return false each time it is called
+     * @param string $selectwhere select conditions.
+     * @param array $params params.
+     *
+     * @return bool Whether events available for the given conditions
+     */
+    public function get_events_select_exists(string $selectwhere, array $params): bool {
+        return false;
     }
 }

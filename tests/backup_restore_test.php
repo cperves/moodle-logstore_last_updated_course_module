@@ -23,12 +23,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace logstore_last_updated_course_module;
+use advanced_testcase;
+use backup;
+use backup_controller;
+use restore_controller;
+use restore_dbops;
+use stdClass;
+use restore_controller_exception;
 
 global $CFG;
 require_once($CFG->dirroot . '/backup/controller/tests/controller_test.php');
 
-class logstore_last_updated_course_moodle_backup_restore_testcase extends advanced_testcase {
+class backup_restore_test extends advanced_testcase {
     private $course;
     private $module;
 
@@ -39,7 +46,7 @@ class logstore_last_updated_course_moodle_backup_restore_testcase extends advanc
         $this->setAdminUser();
         $this->setup_datas();
         // Add log datas.
-        $record = new stdClass();
+        $record = new  stdClass();
         $record->cmid = $this->module->cmid;
         $record->lasttimeupdated = time();
         $DB->insert_record('logstore_lastupdated_log', $record);

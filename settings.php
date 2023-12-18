@@ -41,5 +41,8 @@ if ($hassiteconfig) {
     $settings->add(new admin_setting_configselect('logstore_last_updated_course_module/loglifetime',
             new lang_string('loglifetime', 'core_admin'),
             new lang_string('configloglifetime', 'core_admin'), 0, $options));
+    $settings->add(new admin_setting_configcheckbox('logstore_last_updated_course_module/jsonformat',
+        new lang_string('jsonformat', 'logstore_last_updated_course_module'),
+        new lang_string('jsonformat_desc', 'logstore_last_updated_course_module'), 1));
 }
 

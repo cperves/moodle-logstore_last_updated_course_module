@@ -68,7 +68,7 @@ class restore_logstore_last_updated_course_module_subplugin extends restore_tool
         // Add a fake admin userid since it is required in restore_tool_log_subplugin class.
         $data['userid'] = get_admin()->id;
         $data['other'] = '';
-        $data = $this->process_log($data);
+        $data = $this->process_log($data, get_config('logstore_last_updated_course', 'jsonformat'));
         if ($data) {
             // At this point contextid changed but not cmid, so need to construct a new object.
             if ($data->contextlevel == CONTEXT_MODULE) {
