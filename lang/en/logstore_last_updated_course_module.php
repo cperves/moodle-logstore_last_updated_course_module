@@ -27,3 +27,4 @@ $string['privacy:metadata'] = 'last updated course module log store don\'t store
 $string['taskcleanup'] = 'task to clan up log data table';
 $string['jsonformat'] = 'JSON format';
 $string['jsonformat_desc'] = 'Use standard JSON format instead of PHP serialised data in the \'other\' database field.';
+$string['loglifetime'] = 'Keep logs for';
