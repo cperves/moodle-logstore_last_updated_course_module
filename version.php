@@ -27,6 +27,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->version = 2025070200; // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires = 2024100705; // Requires this Moodle version.
-$plugin->release = '1.0.0;
+$plugin->release = '1.0.0';
 $plugin->maturity   = MATURITY_STABLE;
 $plugin->component = 'logstore_last_updated_course_module'; // Full name of the plugin (used for diagnostics).
